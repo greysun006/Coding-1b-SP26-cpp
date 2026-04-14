@@ -11,11 +11,23 @@ using namespace std;
 int main() {
     cout << "Let's learn about vectors!\n";
 
+    // make a global-ish vector of favs, so that
+        // we are able to see our changes through loops
+    // talk avout the 'auto' variable type
+    // talk about removing with .erase()
+    // searching with sort()
+    // then start the homework
+
+    // this vector exists outside of the do-while loop
+    // so it won't be destroyed every loop.
+    vector<string> favGames = {"Zelda", "Dishonored", "God of War", "Ready or Not"};
+
     string input;
+    // int numberInput = stoi(input)
 
     do {
         cout << "What would you like to do?\n";
-        cout << "You can type 'quit', 'push', and 'find'.\n";
+        cout << "You can type 'quit', 'push', 'find', and 'remove'.\n";
 
         getline(cin, input);        //get input from player
 
@@ -99,7 +111,31 @@ int main() {
                 cout << "We couldn't find that name.\n";
             }
 
-        }
+        } // end of 'find'
+        else if(input == "remove") {
+            sort(favGames.begin(), favGames.end());
+            cout << "Here are your favorite games!\n";
+            for(int i = 0; i < favGames.size(); i++) {
+                cout << favGames[i] << endl;
+            }
+
+            cout << "What game would you like to remove from this list?\n";
+            getline(cin, input);
+
+            auto iter = find(favGames.begin(), favGames.end(), input);
+
+            if(iter != favGames.end()) {
+                cout << "We've found that name. Removing now.\n";
+                favGames.erase(iter);       // remove the element the iter is pointing at
+            }
+            
+            cout << "Here are your favorite games!\n";
+            for(int i = 0; i < favGames.size(); i++) {
+                cout << favGames[i] << endl;
+            }
+
+
+        } // end of 'remove'
         else if(input == "quit") {
             cout << "Thanks for playing!\n";
             break;
