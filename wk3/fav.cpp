@@ -35,6 +35,7 @@ int main() {
 
     // do while loop
     do {
+        // give users options to do something
         cout << "What would you like to do?\n";
         cout << "You can type 'add', 'edit', 'remove', 'show', and 'quit'.\n";
 
@@ -49,6 +50,16 @@ int main() {
             // add player input to list
             favGames.push_back(input);
         }
+        // 'edit' a game else if()
+        else of (input == "edit") {
+            // get list of inputed games
+            cout << "Here are the current games in your list:\n";
+            
+            // choose a game
+            // input new game
+            // change the list
+
+        }
         // 'quit'. else if() w/ break;
         else if(input == "quit") {
             cout << "Thanks for playing!\n";
@@ -60,8 +71,7 @@ int main() {
             cout << "I didn't recognize that command.\n";
         }
     } while(true);
-    // give users options to do something
-        // 'edit' a game else if()
+
         // 'remove' a game else if()
         // 'show' all games (sorted) else if()
 
