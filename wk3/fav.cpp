@@ -29,7 +29,7 @@ int main() {
     cout << "Let's see your favorite games!\n";
 
     // empty vector<string>
-    vector<string> favGames;
+    vector<string> favGames = {"Breath of the Wild", "Ready or Not", "Space Marine 2"};
 
     string input;
 
@@ -52,7 +52,6 @@ int main() {
         }
         // 'edit' a game else if()
         else if (input == "edit") {
-            vector<string> favGames;
             // get list of inputed games
             cout << "Here are the current games in your list:\n";
             // building the iterator. it points to a spot in a vector
@@ -70,7 +69,7 @@ int main() {
             cout << "What name would you like to select?\n";
             getline(cin, input);
             // use the find algorithm
-            iter = find(favGames.begin(), favGames.end());
+            iter = find(favGames.begin(), favGames.end(), input);
 
             if(iter != favGames.end()) {
                 cout << "We've found " << *iter << "!\n";
