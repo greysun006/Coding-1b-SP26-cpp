@@ -12,43 +12,55 @@
 using namespace std;
 
 // this is a global vector, visible in all functions.
-vector<string> names;
+vector<string> names = {"Steve", "Walter", "Betty", "Gavin"};
 
-void read(vector<string>& vec, string path = "names.txt") {
-    string line;
-    ifstream readFile(path);          // input file stream
-    if(readFile.is_open()) {
-        cout << "The file is open.\n";
-        while(getline(readFile, line)) {
-            vec.push_back(line);
-        }
-    }
-    else {
-        cout << "Couldn't open that file.\n";
-    }
+// void read(vector<string>& vec, string path = "names.txt") {
+//     string line;
+//     ifstream readFile(path);          // input file stream
+//     if(readFile.is_open()) {
+//         cout << "The file is open.\n";
+//         while(getline(readFile, line)) {
+//             vec.push_back(line);
+//         }
+//     }
+//     else {
+//         cout << "Couldn't open that file.\n";
+//     }
 
-    // after we're done with the file, close it!!
-    readFile.close();
+//     // after we're done with the file, close it!!
+//     readFile.close();
 
-}
+// }
 
 class baseSlime {
-public:
-    string name = "";
+private:
+    string name;
     int health;
     int damage;
     int hunger;
-    int startingHealth = 0;
 
+public:
     // default constructor
-    baseSlime() {
+    baseSlime(string givenName, int givenHealth, int givenDamage, int givenHunger) {
         cout << "A new slime has been formed.\n";
-        name = names[rand() % names.size()] + " Slime";
-        health = rand() % 4 + 4;
-        startingHealth = health;
-        damage = rand() % 3 + 3;
-        hunger = 0;
+        name = givenName;
+        // names[rand() % names.size()] + " Slime";
+        health = givenHealth;
+        // rand() % 4 + 4;
+        damage = givenDamage;
+        // rand() % 3 + 3;
+        hunger = givenHunger;
+        // 0;
+        hello();
     }
+
+    // slime() {
+    //     name = "ROB";
+    //     health = 5;
+    //     damage = 5;
+    //     hunger = 5;
+    //     hello();
+    // }
 
     void hello() {
         cout << "I'm " << name << ", with " << health << " health ";
@@ -71,19 +83,46 @@ public:
         }
     }
 
+    string getName() {
+        return name;
+    }
+    int getHealth() {
+        return health;
+    }
+    int getDamage() {
+        return damage;
+    }
+    int getHunger() {
+        return hunger;
+    }
+
+    void setName(string givenName) {
+        name = givenName;
+    }
+    void setHealth(int givenHealth) {
+        health = givenHealth;
+    }
+    void setDamage(int givenDamage) {
+        damage = givenDamage;
+    }
+    void setHunger(int givenHunger) {
+        hunger = givenHunger;
+    }
 };
 
 class bossSlime : public baseSlime {
-public:
+private:
     int damageMultiplier = 3;
-    int healthMultiplier;
+    int healthMultiplier = 3;
 
+public:
     // constructor for boss
-    bossSlime() {
+    bossSlime(string givenName, int givenHealth, int givenDamage, int givenHunger, int givenDamageMultiplier, int givenHealthMultiplier) {
         // should inherit health
         // should inherit the cout statement
-        name = "boss";
-        damage = damage * damageMultiplier;
+        name = givenName;
+        damage = givenDamage * givenDamageMultiplier;
+        health = givenHealth * givenHealthMultiplier;
     }
 
     // very straightforward to 'override' a function in the parent class
@@ -103,18 +142,34 @@ public:
     void taunt() {
         cout << "I will crush your bones with my slime!\n";
     }
+
+    int getDamageMultiplier() {
+        return damageMultiplier;
+    }
+    int getHealthMultiplier() {
+        return healthMultiplier;
+    }
+
+    void setDamageMultiplier(int givenDamageMultiplier) {
+        damageMultiplier = givenDamageMultiplier;
+    }
+    void setHealthMultiplier(int givenHealthMultiplier) {
+        healthMultiplier = givenHealthMultiplier
+    }
 };
 
 int main() {
-    read(names, names.txt);
+    // read(names, names.txt);
 
     srand(time(0));
 
     string input;
 
-    baseSlime player;
+    slime rob;
 
-    bossSlime boss;
+    baseSlime player(names[rand() % names.size()] + " Slime", rand() % 3 + 3, rand() % 4 + 4, 0);
+
+    bossSlime boss(names[rand() % names.size()] + " Slime", rand() % 3 + 3, rand() % 4 + 4, 0, 3, 3);
 
     cout << "Welcome to Slime Battles!\n";
     do {
@@ -139,7 +194,7 @@ int main() {
 
     // Train slime
     else if(input == "train") {
-        if (player.hunger >= 10) {
+        if(player.hunger >= 10) {
             cout << player.name << " is too hungry to train!\n";
         }
         else if(player.hunger >= 5) {
@@ -170,8 +225,8 @@ int main() {
 
     // Battle slime
     else if(input == "battle") {
-        cout << player.name << " is fighting " << boss.name << "!\n";
         boss.name = "Destroyer";
+        cout << player.name << " is fighting " << boss.name << "!\n";
         boss.taunt();
 
         while(player.health > 0 && boss.health > 0) {
