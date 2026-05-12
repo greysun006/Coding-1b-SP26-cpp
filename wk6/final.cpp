@@ -12,27 +12,28 @@
 using namespace std;
 
 // this is a global vector, visible in all functions.
-vector<string> names = {"Steve", "Walter", "Betty", "Gavin"};
+vector<string> names;
 
-// void read(vector<string>& vec, string path = "names.txt") {
-//     string line;
-//     ifstream readFile(path);          // input file stream
-//     if(readFile.is_open()) {
-//         cout << "The file is open.\n";
-//         while(getline(readFile, line)) {
-//             vec.push_back(line);
-//         }
-//     }
-//     else {
-//         cout << "Couldn't open that file.\n";
-//     }
+void read(vector<string>& vec, string path = "names.txt") {
+    vec.clear();
+    string line;
+    ifstream readFile(path);          // opens the file
+    if(readFile.is_open()) {
+        cout << "The file is open.\n";
+        while(getline(readFile, line)) {
+            vec.push_back(line);
+        }
+    }
+    else {
+        cout << "Couldn't open that file.\n";
+    }
 
-//     // after we're done with the file, close it!!
-//     readFile.close();
+    // after we're done with the file, close it!!
+    readFile.close();
 
-// }
+}
 
-class baseSlime {
+class slime {
 private:
     string name;
     int health;
@@ -41,7 +42,7 @@ private:
 
 public:
     // default constructor
-    baseSlime(string givenName, int givenHealth, int givenDamage, int givenHunger) {
+    slime(string givenName, int givenHealth, int givenDamage, int givenHunger) {
         cout << "A new slime has been formed.\n";
         name = givenName;
         // names[rand() % names.size()] + " Slime";
@@ -51,16 +52,7 @@ public:
         // rand() % 3 + 3;
         hunger = givenHunger;
         // 0;
-        hello();
     }
-
-    // slime() {
-    //     name = "ROB";
-    //     health = 5;
-    //     damage = 5;
-    //     hunger = 5;
-    //     hello();
-    // }
 
     void hello() {
         cout << "I'm " << name << ", with " << health << " health ";
@@ -70,7 +62,7 @@ public:
 
     // attack another slime
     // return true if opponent health <= 0
-    bool attack(baseSlime& opponent) {
+    bool attack(slime& opponent) {
         opponent.health -= damage;
         cout << name << " has done " << damage << " damage to ";
         cout << opponent.name << "!\n";
@@ -110,66 +102,67 @@ public:
     }
 };
 
-class bossSlime : public baseSlime {
-private:
-    int damageMultiplier = 3;
-    int healthMultiplier = 3;
+// class bossSlime : public slime {
+// private:
+//     int damageMultiplier = 3;
+//     int healthMultiplier = 3;
 
-public:
-    // constructor for boss
-    bossSlime(string givenName, int givenHealth, int givenDamage, int givenHunger, int givenDamageMultiplier, int givenHealthMultiplier) {
-        // should inherit health
-        // should inherit the cout statement
-        name = givenName;
-        damage = givenDamage * givenDamageMultiplier;
-        health = givenHealth * givenHealthMultiplier;
-    }
+// public:
+//     // constructor for boss
+//     bossSlime(string givenName, int givenHealth, int givenDamage, int givenHunger, int givenDamageMultiplier, int givenHealthMultiplier) {
+//         // should inherit health
+//         // should inherit the cout statement
+//         name = givenName;
+//         damage = givenDamage * givenDamageMultiplier;
+//         health = givenHealth * givenHealthMultiplier;
+//     }
 
-    // very straightforward to 'override' a function in the parent class
-    bool attack(baseSlime& opponent) {
-        cout << "This is a boss attack!\n";
-        opponent.health -= damage;
-        cout << name << " has done " << damage << " damage to ";
-        cout << opponent.name << "!\n";
-        if(opponent.health <= 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+//     // very straightforward to 'override' a function in the parent class
+//     bool attack(slime& opponent) {
+//         cout << "This is a boss attack!\n";
+//         opponent.health -= damage;
+//         cout << name << " has done " << damage << " damage to ";
+//         cout << opponent.name << "!\n";
+//         if(opponent.health <= 0) {
+//             return true;
+//         }
+//         else {
+//             return false;
+//         }
+//     }
 
-    void taunt() {
-        cout << "I will crush your bones with my slime!\n";
-    }
+//     void taunt() {
+//         cout << "I will crush your bones with my slime!\n";
+//     }
 
-    int getDamageMultiplier() {
-        return damageMultiplier;
-    }
-    int getHealthMultiplier() {
-        return healthMultiplier;
-    }
+//     int getDamageMultiplier() {
+//         return damageMultiplier;
+//     }
+//     int getHealthMultiplier() {
+//         return healthMultiplier;
+//     }
 
-    void setDamageMultiplier(int givenDamageMultiplier) {
-        damageMultiplier = givenDamageMultiplier;
-    }
-    void setHealthMultiplier(int givenHealthMultiplier) {
-        healthMultiplier = givenHealthMultiplier
-    }
-};
+//     void setDamageMultiplier(int givenDamageMultiplier) {
+//         damageMultiplier = givenDamageMultiplier;
+//     }
+//     void setHealthMultiplier(int givenHealthMultiplier) {
+//         healthMultiplier = givenHealthMultiplier
+//     }
+// };
 
 int main() {
     // read(names, names.txt);
 
     srand(time(0));
 
+    read(names);
+
     string input;
 
-    slime rob;
+    slime player(names[rand() % names.size()] + " Slime", rand() % 3 + 3, rand() % 4 + 4, 0);
 
-    baseSlime player(names[rand() % names.size()] + " Slime", rand() % 3 + 3, rand() % 4 + 4, 0);
-
-    bossSlime boss(names[rand() % names.size()] + " Slime", rand() % 3 + 3, rand() % 4 + 4, 0, 3, 3);
+    slime enemy(names[rand() % names.size()] + " Slime", rand() % 3 + 3, rand() % 4 + 4, 0);
+    // bossSlime boss(names[rand() % names.size()] + " Slime", rand() % 3 + 3, rand() % 4 + 4, 0, 3, 3);
 
     cout << "Welcome to Slime Battles!\n";
     do {
@@ -189,33 +182,36 @@ int main() {
         getline(cin, input);
 
         // set slime name as player input
-        player.name = input;
+        player.setName(input);
     }
 
     // Train slime
     else if(input == "train") {
-        if(player.hunger >= 10) {
-            cout << player.name << " is too hungry to train!\n";
+        if(player.getHunger() >= 10) {
+            cout << player.getName() << " is too hungry to train!\n";
         }
-        else if(player.hunger >= 5) {
-            cout << player.name << " is getting hungry.\n";
-            player.health += 1;
-            player.damage += 1;
-            player.hunger += 2;
+        else if(player.getHunger() >= 5) {
+            cout << player.getName() << " is getting hungry.\n";
+            player.setHealth(player.getHealth() + 1);
+            player.setDamage(player.getDamage() + 1);
+            player.setHunger(player.getHunger() + 2);
         }
         else {
-            cout << player.name << " is training hard!\n";
-            player.health += 2;
-            player.damage += 2;
-            player.hunger += 1;
+            cout << player.getName() << " is training hard!\n";
+            player.setHealth(player.getHealth() + 2);
+            player.setDamage(player.getDamage() + 2);
+            player.setHunger(player.getHunger() + 1);
         }
     }
 
     // Feed slime
     else if(input == "feed") {
-        cout << player.name << " is at " << player.hunger << " hunger level.\n";
-
-        player.hunger += -2;
+        if(player.getHunger() <= 0) {
+            cout << player.getName() << " is completely full!\n";
+        }
+        cout << player.getName() << " is at " << player.getHunger() << " hunger level.\n";
+        player.setHealth(player.getHealth() - player.getDamage());
+        player.setHunger(player.getHunger() - 2);
     }
 
     // Listen to slime
@@ -225,21 +221,20 @@ int main() {
 
     // Battle slime
     else if(input == "battle") {
-        boss.name = "Destroyer";
-        cout << player.name << " is fighting " << boss.name << "!\n";
-        boss.taunt();
+        // enemy.setName(Timothy);
+        cout << player.getName() << " is fighting " << enemy.getName() << "!\n";
 
-        while(player.health > 0 && boss.health > 0) {
-         if(player.attack(boss)) {
+        while(player.getHealth() > 0 && enemy.getHealth() > 0) {
+         if(player.attack(enemy)) {
             cout << "RKO! OUT OF NOWHERE!!\n";
-            cout << boss.name << " has been defeated by ";
-            cout << player.name << ".\n";
+            cout << enemy.getName() << " has been defeated by ";
+            cout << player.getName() << ".\n";
          }
          else {
-             if(boss.attack(player)) {
-                cout << "Here comes " << boss.name << " with a STEEL CHAIR!!\n";
-                cout << player.name << " has been defeated by ";
-                cout << boss.name << ".\n";
+             if(enemy.attack(player)) {
+                cout << "Here comes " << enemy.getName() << " with a STEEL CHAIR!!\n";
+                cout << player.getName() << " has been defeated by ";
+                cout << enemy.getName() << ".\n";
              }
          }
      }
@@ -256,7 +251,7 @@ int main() {
     }
 
     // create a slime
-    // baseSlime gerald;
+    // slime gerald;
     // gerald.name = "Gerald";
     // gerald.hello();
 
@@ -279,7 +274,7 @@ int main() {
     // global variables
 
     // create a new vector of slimes with a size of 6.
-    // vector<baseSlime> sludge(6);
+    // vector<slime> sludge(6);
 
     // cout << "Here's our sludge of slimes:\n\n";
     // for(auto& slime : sludge) {
